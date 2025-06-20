@@ -1,5 +1,6 @@
 // Inclui o cabeçalho que declara funções e variáveis globais utilizadas neste módulo
 #include "global_manage.h"
+#include <stdio.h>             // Biblioteca padrão de entrada/saída (ex: printf)
 
 Nivel nivel;
 
@@ -27,7 +28,7 @@ int get_min()
 
 void set_nivel(int niv_adc) 
 {
-    nivel.nivel_atual = (niv_adc/4095)*100;  
+    nivel.nivel_atual = (niv_adc*100)/4095;
 }
 
 int get_nivel() 

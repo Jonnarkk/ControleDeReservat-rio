@@ -51,64 +51,6 @@ void vServerTask()
     cyw43_arch_deinit();
 }
 
-// Tarefa que controla o display
-// void vDisplayTask()
-// {
-//     // Inicializa o display (OLED/SSD1306)
-//     display_init(get_ssd_pointer());
-
-//     while (true)
-//     {
-//         desenhar_prioridade(get_ssd_pointer()); // Atualiza o display com o novo estado de prioridade
-//         vTaskDelay(pdMS_TO_TICKS(100));    // Esperar 100ms
-//     }
-// }
-
-// Tarefa que controla o buzzer e o led rgb
-// void vBuzzerTask()
-// {
-//     // Inicializa o buzzer
-//     buzzer_init();
-//     // Inicializa os pinos GPIO dos leds
-//     init_pins();
-
-//     while (true)
-//     {
-//         if (get_buzzer()==BUZZER_ATIVADO) // se o o buzzer estiver ativo aciona o buzzer e o led rgb
-//         {
-//             //gpio_put(RED_PIN, 0);
-//             gpio_put(BLUE_PIN, 1); // acende led azul
-//             pwm_set_gpio_level(BUZZER_PIN, 2048);  // ativa buzzer
-//             vTaskDelay(pdMS_TO_TICKS(100));    // Esperar 100ms  
-
-//             gpio_put(BLUE_PIN, 0); // apaga led azul
-//             gpio_put(RED_PIN, 1); // acende led vermelho
-//             pwm_set_gpio_level(BUZZER_PIN, 0);  // desativa buzzer
-//             vTaskDelay(pdMS_TO_TICKS(100));    // Esperar 100ms 
-//             gpio_put(RED_PIN, 0);
-//         }
-//     }
-// }
-
-// Tarefa que controla a matriz
-// void vMatrizTask()
-// {
-//     PIO pio = pio0;
-//     uint sm = pio_init(pio); // Inicializa State Machine para PIO
-    
-//     while (true)
-//     {
-//         if (get_buzzer()==BUZZER_ATIVADO) // se o o buzzer estiver ativo a matriz também deve ser ativada
-//         {
-//             desenhar_alerta(pio, sm);  // desenha uma exclamação na matriz
-//             vTaskDelay(pdMS_TO_TICKS(200));    // Esperar 100ms  
-
-//             apagar_matriz(pio, sm);  // apaga a matriz
-//             vTaskDelay(pdMS_TO_TICKS(200));    // Esperar 100ms 
-//         }
-//     }
-// }
-
 void vAdcTask() 
 {
     adc_init();
@@ -117,7 +59,7 @@ void vAdcTask()
 
     while (true)
     {
-        set_nivel(adc_read());
+        set_nivel((int)adc_read());
         printf("Task adc rodando: %d\nAdc: %d\n", adc_read(), get_nivel());
         vTaskDelay(pdMS_TO_TICKS(500));    // Esperar 100ms
     }
