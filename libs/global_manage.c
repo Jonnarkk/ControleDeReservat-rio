@@ -4,7 +4,7 @@
 
 Nivel nivel;
 
-bool motor;
+bool motor = false;
 
 void set_max(int max) 
 {

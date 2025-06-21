@@ -160,3 +160,31 @@ void start_http_server(void) {
     tcp_accept(pcb, connection_callback);
     printf("Servidor de Controle de Nível rodando na porta 80...\n");
 }
+
+// APENAS TESTANDO O HTML - IGNORAR
+/* 
+<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Controle de Nível</title>
+    <style>
+    body{font-family:sans-serif;text-align:center;padding:20px;background:#f0f2f5}
+    h1{color:#333}.container{max-width:500px;margin:auto;background:white;padding:20px;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+    .barra{width:100%;background:#e9ecef;border-radius:8px;overflow:hidden;margin:10px 0 20px 0;height:30px;border:1px solid #ccc}
+    .preenchimento{height:100%;transition:width .5s ease-in-out;background:#007bff}
+    .label{font-weight:bold;margin-top:15px;margin-bottom:5px;display:block;color:#555}
+    .status-motor{font-size:24px;font-weight:bold;padding:10px;border-radius:5px}
+    .status-motor.ligado{color:#28a745;background:#e9f7ec}.status-motor.desligado{color:#dc3545;background:#fdeeee}
+    .input-group{margin:10px 0;display:flex;justify-content:center;align-items:center;gap:10px}
+    .input-group input{width:80px;padding:8px;text-align:center;font-size:16px;border:1px solid #ccc;border-radius:5px}
+    .input-group button{padding:8px 15px;border:none;background:#5cb85c;color:white;border-radius:5px;cursor:pointer}
+    </style>
+    <script>
+    function setLimite(e){const t=document.getElementById('input_'+e).value;if(t>=0&&t<=100){fetch('/nivel/'+e+'?valor='+t);document.getElementById('input_'+e).blur()}else{alert('Por favor, insira um valor entre 0 e 100.')}}
+    function atualizar(){fetch('/nivel/estado').then(e=>e.json()).then(e=>{document.getElementById('nivel_valor').innerText=e.nivel_pc;document.getElementById('barra_nivel').style.width=e.nivel_pc+'%';const t=document.getElementById('motor_estado');t.innerText=e.motor_status?'LIGADO':'DESLIGADO';t.className='status-motor '+(e.motor_status?'ligado':'desligado');const n=document.getElementById('input_min');document.activeElement!==n&&(n.value=e.nivel_min);const o=document.getElementById('input_max');document.activeElement!==o&&(o.value=e.nivel_max)}).catch(e=>console.error('Erro:',e))}"
+    setInterval(atualizar,500);window.onload=atualizar;
+    </script></head><body>"
+    <div class=container><h1>Controle de Nível de Água</h1>
+    <p class=label>Nível Atual: <span id=nivel_valor>--</span>%</p>
+    <div class=barra><div id=barra_nivel class=preenchimento></div></div>
+    <p class=label>Estado do Motor:</p><p id=motor_estado class='status-motor desligado'>--</p><hr style=margin:20px 0>"
+    <div class=input-group><label for=input_min>Mínimo (%):</label><input type=number id=input_min min=0 max=100><button onclick=\"setLimite('min')\">Definir</button></div>
+    <div class=input-group><label for=input_max>Máximo (%):</label><input type=number id=input_max min=0 max=100><button onclick=\"setLimite('max')\">Definir</button></div>
+    </div></body></html> */
