@@ -11,6 +11,7 @@
 // ===================  PÁGINA WEB (HTML / CSS / JAVASCRIPT) ==========================
 // ====================================================================================
 // HTML minificado para economizar espaço
+// HTML/CSS minificado e JavaScript com a correção de foco nos inputs.
 const char HTML_BODY[] =
     "<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Controle de Nível</title>"
     "<style>"
@@ -26,9 +27,9 @@ const char HTML_BODY[] =
     ".input-group button{padding:8px 15px;border:none;background:#5cb85c;color:white;border-radius:5px;cursor:pointer}"
     "</style>"
     "<script>"
-    "function setLimite(e){const t=document.getElementById('input_'+e).value;t>=0&&t<=100?fetch('/nivel/'+e+'?valor='+t):alert('Valor entre 0 e 100.')}"
-    "function atualizar(){fetch('/nivel/estado').then(e=>e.json()).then(e=>{document.getElementById('nivel_valor').innerText=e.nivel_pc,document.getElementById('barra_nivel').style.width=e.nivel_pc+'%';const t=document.getElementById('motor_estado');t.innerText=e.motor_status?'LIGADO':'DESLIGADO',t.className='status-motor '+(e.motor_status?'ligado':'desligado'),document.getElementById('input_min').value=e.nivel_min,document.getElementById('input_max').value=e.nivel_max}).catch(e=>console.error('Erro:',e))}"
-    "setInterval(atualizar,1500),window.onload=atualizar;"
+    "function setLimite(e){const t=document.getElementById('input_'+e).value;if(t>=0&&t<=100){fetch('/nivel/'+e+'?valor='+t);document.getElementById('input_'+e).blur()}else{alert('Por favor, insira um valor entre 0 e 100.')}}"
+    "function atualizar(){fetch('/nivel/estado').then(e=>e.json()).then(e=>{document.getElementById('nivel_valor').innerText=e.nivel_pc;document.getElementById('barra_nivel').style.width=e.nivel_pc+'%';const t=document.getElementById('motor_estado');t.innerText=e.motor_status?'LIGADO':'DESLIGADO';t.className='status-motor '+(e.motor_status?'ligado':'desligado');const n=document.getElementById('input_min');document.activeElement!==n&&(n.value=e.nivel_min);const o=document.getElementById('input_max');document.activeElement!==o&&(o.value=e.nivel_max)}).catch(e=>console.error('Erro:',e))}"
+    "setInterval(atualizar,500);window.onload=atualizar;"
     "</script></head><body>"
     "<div class=container><h1>Controle de Nível de Água</h1>"
     "<p class=label>Nível Atual: <span id=nivel_valor>--</span>%</p>"
@@ -40,7 +41,7 @@ const char HTML_BODY[] =
 
 // Estrutura de estado para cada conexão. Contém o buffer de resposta.
 typedef struct HTTP_STATE_T {
-    char response[2560]; // Buffer para TODAS as respostas (HTML cabe aqui)
+    char response[4096]; // Buffer para TODAS as respostas (HTML cabe aqui)
     size_t len;
     size_t sent;
 } HTTP_STATE;
@@ -111,12 +112,9 @@ static err_t http_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t er
             "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s", strlen(body_ptr), body_ptr);
     }
     else if (strncmp(req_buffer, "GET /nivel/estado ", 18) == 0) {
-        int nivel = get_nivel(), max = get_max(), min = get_min();
-        if (nivel < min) set_motor(true); else if (nivel > max) set_motor(false);
-        
         snprintf(body_buffer, sizeof(body_buffer),
             "{\"nivel_pc\":%d,\"motor_status\":%s,\"nivel_min\":%d,\"nivel_max\":%d}",
-            nivel, get_motor() ? "true" : "false", min, max);
+            get_nivel(), get_motor() ? "true" : "false", get_min(), get_max());
         body_ptr = body_buffer;
         state->len = snprintf(state->response, sizeof(state->response),
             "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: %d\r\n\r\n%s", strlen(body_ptr), body_ptr);

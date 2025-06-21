@@ -44,7 +44,7 @@ void vServerTask()
         * quando se utiliza um estilo de sondagem pico_cyw43_arch 
         */
         cyw43_arch_poll(); // Necessário para manter o Wi-Fi ativo
-        //vTaskDelay(pdMS_TO_TICKS(100));    // Esperar 100ms
+        vTaskDelay(pdMS_TO_TICKS(10));    // Esperar 100ms
     }
 
     //Desligar a arquitetura CYW43.
@@ -59,8 +59,16 @@ void vAdcTask()
 
     while (true)
     {
+        int nivel = get_nivel(), max = get_max(), min = get_min();
+        bool motor = get_motor();
+
         set_nivel((int)adc_read());
-        printf("Task adc rodando: %d\nAdc: %d\n", adc_read(), get_nivel());
+
+        if (nivel < min && motor==false) set_motor(true); 
+        else if (nivel > max && motor==true) set_motor(false);
+
+
+        // printf("Task adc rodando: %d\nAdc: %d\n", adc_read(), get_nivel());
         vTaskDelay(pdMS_TO_TICKS(500));    // Esperar 100ms
     }
 }
