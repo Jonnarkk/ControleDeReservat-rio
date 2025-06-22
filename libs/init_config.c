@@ -53,26 +53,6 @@ void buzzer_init()
     pwm_set_gpio_level(BUZZER_PIN, 0);
 }
 
-// volatile void gpio_irq_handler(uint gpio, uint32_t events){
-//     PIO pio = pio0;
-//     uint sm = pio_init(pio);
-
-//     apagar_matriz(pio, sm);
-    
-//     ssd1306_fill(ssd, false);
-//     ssd1306_send_data(ssd);
-//     reset_usb_boot(0, 0);
-// }
-
-// // Configura o pino do botão como entrada com pull-up
-// void button_init()
-// {
-//     gpio_init(BOTAOB);
-//     gpio_set_dir(BOTAOB, GPIO_IN);
-//     gpio_pull_up(BOTAOB);
-//     gpio_set_irq_enabled_with_callback(BOTAOB, GPIO_IRQ_EDGE_FALL, true, &gpio_irq_handler);
-// }
-
 // Configura os pinos dos LEDs como saída
 void adc_init_custom()
 {
@@ -87,4 +67,7 @@ void init_global_manage()
     set_min(0);
     set_nivel(0);
     set_motor(false);
+
+    gpio_init(GPIO_18);
+    gpio_set_dir(GPIO_18, GPIO_OUT);
 }
