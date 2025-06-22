@@ -5,8 +5,8 @@
 
 // #include "lwip/netif.h"
 
-const char WIFI_SSID[] = "Lucas";  // adicione o ssid da rede
-const char WIFI_PASSWORD[] = "jrxnje23";  // adicione a senha
+const char WIFI_SSID[] = "";  // adicione o ssid da rede
+const char WIFI_PASSWORD[] = "";  // adicione a senha
 
 int connect_wifi()
 {

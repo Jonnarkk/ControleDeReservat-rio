@@ -118,30 +118,21 @@ void vDisplayTask()
 }
 
 void vMatrizTask(){
-    bool motor_a=true, motor=false;
     PIO pio = pio0;
     uint sm = pio_init(pio);
-    apagar_matriz(pio, sm);
 
     while(true)
     {
-        if (motor!=motor_a) 
+        if(get_motor())
         {
-            if(motor)
-            {
-                ligar_seta(pio, sm, 0.0, 0.0, 0.1);
-            }
-            else
-            {
-                ligar_checkmark(pio, sm, 0.0, 0.1, 0.0);
-            }
+            ligar_seta(pio, sm, 0.0, 0.0, 0.1);
         }
-        
-        motor_a = motor;
+        else
+        {
+            ligar_checkmark(pio, sm, 0.0, 0.1, 0.0);
+        }
 
         vTaskDelay(pdMS_TO_TICKS(500));
-
-        motor = get_motor();
     }
 }
 
@@ -150,8 +141,6 @@ int main()
     // Inicializa todas as interfaces padrão de entrada/saída
     stdio_init_all();
 
-    // Desativa o buzzer (define o estado como inativo)
-    // desativar_buzzer();
     init_global_manage();
 
     // Cria tarefas com prioridades e pilhas mínimas
