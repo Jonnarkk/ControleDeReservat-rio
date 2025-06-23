@@ -6,42 +6,42 @@ Nivel nivel;
 
 bool motor;
 
-void set_max(int max) 
+void set_max(int max)
 {
-    nivel.max = max; 
+    nivel.max = max;
 }
 
-int get_max() 
+int get_max()
 {
     return nivel.max;
 }
 
-void set_min(int min) 
+void set_min(int min)
 {
     nivel.min = min;
 }
 
-int get_min() 
+int get_min()
 {
     return nivel.min;
 }
 
-void set_nivel(int niv_adc) 
+void set_nivel(int niv_adc)
 {
     nivel.nivel_atual = (niv_adc*100)/4095;
 }
 
-int get_nivel() 
+int get_nivel()
 {
     return nivel.nivel_atual;
 }
 
-void set_motor(bool estado) 
+void set_motor(bool estado)
 {
     motor = estado;
 }
 
-bool get_motor() 
+bool get_motor()
 {
     return motor;
 }
