@@ -10,7 +10,7 @@ const char WIFI_PASSWORD[] = "";  // adicione a senha
 
 int connect_wifi()
 {
-    if (cyw43_arch_init()) 
+    if (cyw43_arch_init())
     {
         printf("Não foi possível conectar.");
         return 1;

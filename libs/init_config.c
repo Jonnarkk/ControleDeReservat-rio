@@ -34,7 +34,7 @@ void display_init(ssd1306_t *ssd)
 }
 
 // Configura o PWM no pino do buzzer para gerar o tom desejado
-void buzzer_init() 
+void buzzer_init()
 {
     // Associa o pino do buzzer à função PWM
     gpio_set_function(BUZZER_PIN, GPIO_FUNC_PWM);
@@ -61,7 +61,7 @@ void adc_init_custom()
     adc_select_input(ADC_CHANNEL);
 }
 
-void init_global_manage() 
+void init_global_manage()
 {
     set_max(100);
     set_min(0);
